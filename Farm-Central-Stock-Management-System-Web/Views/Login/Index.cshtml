@@ -1,0 +1,65 @@
+﻿@model Farm_Central_Stock_Management_System_Web.Models.User
+
+@{
+    ViewBag.Title = "Create";
+}
+<head>
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <link href="~/Resouces/Libary/font-awesome.css" rel="stylesheet" />
+    <link href="~/Resouces/Libary/style.css" rel="stylesheet" />
+
+    <style style="background-repeat:no-repeat">
+        body {
+            background-image: url("/Resouces/background.jpeg");
+        }
+    </style>
+</head>
+<body>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <img src="~/Resouces/user.png" />
+   
+            
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            
+                <div class="w3ls-login box box--big">
+                    <div class="justify-content-center">
+                        <div class="agile-field-txt">
+                                <h2 style="font-size:xx-large;color:white">Login</h2>
+                            <div class="form-group">
+                                <label><i aria-hidden="true"></i> Username </label>
+                                    <div class="col-md-10 align-content-end">
+                                        @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+                                    </div>
+                                    <br />
+                                </div>
+                                <div class="form-group">
+                                    <label><i aria-hidden="true"></i> Password </label>
+                                        <div class="col-md-10">
+                                            @Html.PasswordFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                                        </div>
+</div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Login" class="btn btn-default" />
+                                    </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+         
+}
+</body>

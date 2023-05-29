@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FarmCentralDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Emp_Id" />
+          </Key>
+          <Property Name="Emp_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Emp_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Emp_surname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Emp_email" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Farmer">
+          <Key>
+            <PropertyRef Name="farmer_Id" />
+          </Key>
+          <Property Name="farmer_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="farmer_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="farmer_surname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="farmer_adress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="farmer_contact" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="prod_Id" />
+          </Key>
+          <Property Name="prod_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="catagory_id" Type="int" Nullable="false" />
+          <Property Name="farmer_id" Type="int" Nullable="false" />
+          <Property Name="prod_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="prodCat_Id" />
+          </Key>
+          <Property Name="prodCat_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Catagory" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK1">
+          <End Role="Farmer" Type="Self.Farmer" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Farmer">
+              <PropertyRef Name="farmer_Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="farmer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK2">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="prodCat_Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="catagory_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FarmCentralDBModelStoreContainer">
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Farmer" EntityType="Self.Farmer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK1" Association="Self.FK1">
+            <End Role="Farmer" EntitySet="Farmer" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK2" Association="Self.FK2">
+            <End Role="ProductType" EntitySet="ProductType" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FarmCentralDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Farmer">
+          <Key>
+            <PropertyRef Name="farmer_Id" />
+          </Key>
+          <Property Name="farmer_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="farmer_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="farmer_surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="farmer_adress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="farmer_contact" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Products" Relationship="FarmCentralDBModel.FK1" FromRole="Farmer" ToRole="Product" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="FarmCentralDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Farmers" EntityType="Self.Farmer" />
+          <EntitySet Name="Employees" EntityType="FarmCentralDBModel.Employee" />
+          <EntitySet Name="Products" EntityType="FarmCentralDBModel.Product" />
+          <EntitySet Name="ProductTypes" EntityType="FarmCentralDBModel.ProductType" />
+          <AssociationSet Name="FK1" Association="FarmCentralDBModel.FK1">
+            <End Role="Farmer" EntitySet="Farmers" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK2" Association="FarmCentralDBModel.FK2">
+            <End Role="ProductType" EntitySet="ProductTypes" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <EntitySet Name="Users" EntityType="FarmCentralDBModel.User" />
+        </EntityContainer>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Emp_Id" />
+          </Key>
+          <Property Name="Emp_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Emp_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Emp_surname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Emp_email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="prod_Id" />
+          </Key>
+          <Property Name="prod_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="catagory_id" Type="Int32" Nullable="false" />
+          <Property Name="farmer_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Farmer" Relationship="FarmCentralDBModel.FK1" FromRole="Product" ToRole="Farmer" />
+          <NavigationProperty Name="ProductType" Relationship="FarmCentralDBModel.FK2" FromRole="Product" ToRole="ProductType" />
+          <Property Name="prod_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="prodCat_Id" />
+          </Key>
+          <Property Name="prodCat_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Catagory" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="FarmCentralDBModel.FK2" FromRole="ProductType" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK1">
+          <End Type="FarmCentralDBModel.Farmer" Role="Farmer" Multiplicity="1" />
+          <End Type="FarmCentralDBModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Farmer">
+              <PropertyRef Name="farmer_Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="farmer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK2">
+          <End Type="FarmCentralDBModel.ProductType" Role="ProductType" Multiplicity="1" />
+          <End Type="FarmCentralDBModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="prodCat_Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="catagory_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FarmCentralDBModelStoreContainer" CdmEntityContainer="FarmCentralDBEntities">
+          <EntitySetMapping Name="Farmers">
+            <EntityTypeMapping TypeName="FarmCentralDBModel.Farmer">
+              <MappingFragment StoreEntitySet="Farmer">
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="farmer_Id" ColumnName="farmer_Id" />
+                <ScalarProperty Name="farmer_name" ColumnName="farmer_name" />
+                <ScalarProperty Name="farmer_surname" ColumnName="farmer_surname" />
+                <ScalarProperty Name="farmer_adress" ColumnName="farmer_adress" />
+                <ScalarProperty Name="farmer_contact" ColumnName="farmer_contact" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="FarmCentralDBModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="Emp_email" ColumnName="Emp_email" />
+                <ScalarProperty Name="Emp_surname" ColumnName="Emp_surname" />
+                <ScalarProperty Name="Emp_name" ColumnName="Emp_name" />
+                <ScalarProperty Name="Emp_Id" ColumnName="Emp_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="FarmCentralDBModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="prod_name" ColumnName="prod_name" />
+                <ScalarProperty Name="farmer_id" ColumnName="farmer_id" />
+                <ScalarProperty Name="catagory_id" ColumnName="catagory_id" />
+                <ScalarProperty Name="prod_Id" ColumnName="prod_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTypes">
+            <EntityTypeMapping TypeName="FarmCentralDBModel.ProductType">
+              <MappingFragment StoreEntitySet="ProductType">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Catagory" ColumnName="Catagory" />
+                <ScalarProperty Name="prodCat_Id" ColumnName="prodCat_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="FarmCentralDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
